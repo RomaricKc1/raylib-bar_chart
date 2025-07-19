@@ -1,0 +1,19 @@
+.{
+    .name = .raylib_bar_chart,
+    .version = "0.0.0",
+    .fingerprint = 0xa11b6731c6581db9, // Changing this has security and trust implications.
+    .minimum_zig_version = "0.15.0-dev.847+850655f06",
+    .dependencies = .{
+        .raylib_zig = .{
+            .url = "git+https://github.com/Not-Nik/raylib-zig?ref=devel#5013830647196ba938a3a25a36b8245606e9a9cd",
+            .hash = "raylib_zig-5.6.0-dev-KE8REM0tBQAHVn9Xjqlgu9l1qgfTmP8aJa1kLhD584bV",
+        },
+    },
+    .paths = .{
+        "build.zig",
+        "build.zig.zon",
+        "src",
+        "README.md",
+        "LICENSE",
+    },
+}

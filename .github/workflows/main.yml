@@ -1,0 +1,77 @@
+name: CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: "Main build using -> '${{ matrix.THIS_OPTIM }}'"
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        THIS_OPTIM: [ "", "--release=fast", "--release=safe", "--release=small" ]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install zig
+        uses: mlugg/setup-zig@v2
+
+      - name: Zig details
+        run: |
+          zig version
+          zig env
+
+      - name: Build now
+        run: zig build ${{ matrix.THIS_OPTIM }}  --summary all
+
+      - name: Test it
+        run: zig build test ${{ matrix.THIS_OPTIM }} --summary all
+
+      - name: check bin size
+        run: ls -lht zig-out/bin
+
+  fmt:
+    name: Check the formatting
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install zig
+        uses: mlugg/setup-zig@v2
+
+      - name: Run fmt check
+        run:  zig fmt --check . --exclude zig-cache
+
+  code_coverage:
+    name: Check the code coverage
+    runs-on: ubuntu-22.04
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install zig
+        uses: mlugg/setup-zig@v2
+        with:
+          version: 0.14.1
+
+      - name: Install kcov
+        run: |
+          sudo apt update && sudo apt install -y --no-install-recommends --allow-unauthenticated kcov
+
+      - name: Check coverage
+        run: zig build test -Dtest_coverage  --summary all
+
+      - name: Download artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage_json_files
+          path: |
+            kcov-out/*/coverage.json
