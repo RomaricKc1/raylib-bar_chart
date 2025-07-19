@@ -3,7 +3,20 @@ Bar chart widget for [Raylib-zig](https://github.com/Not-Nik/raylib-zig).
 
 Example usage here -> [ZISTORY](https://github.com/RomaricKc1/zistory).
 
-Zig version `0.15.0-dev.936+fc2c1883b`
+Tested on Zig version `0.15.0-dev.936+fc2c1883b`, `0.14.1`.
+
+> [!NOTE]
+> This is configured to work on `wayland`. If you are on `x11`, you'll need to change the display `backend`.
+
+In the raylib dependency.
+
+```zig
+const raylib_dep = b.dependency("raylib_zig", .{
+    .target = target,
+    .optimize = optimize,
+    .linux_display_backend = .X11,
+});
+```
 
 # Usage
 
