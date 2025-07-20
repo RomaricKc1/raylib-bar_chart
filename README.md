@@ -31,7 +31,7 @@ zig fetch --save git+https://github.com/RomaricKc1/raylib-bar_chart/
 And add these lines to your `build.zig` file:
 
 ```zig
-const rl_bar_chart_dep = b.dependency("rl_bar_chart", .{
+const rl_bar_chart_dep = b.dependency("raylib_bar_chart", .{
     .target = target,
     .optimize = optimize,
 });
